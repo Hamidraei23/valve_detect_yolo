@@ -21,3 +21,6 @@ We start with a Dockerfile that sets up an environment with all necessary depend
 ### cd yolov5
 
 ### pip install -r requirements.txt 
+
+## Sample command
+python detect.py --weights runs/train/exp/weights/best.pt --img 640 --source /path/to/images
