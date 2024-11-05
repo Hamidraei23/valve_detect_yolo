@@ -12,3 +12,12 @@ Features
 Ready-to-use Dockerfile: Streamlined for PyTorch and YOLO usage.
 Dependency Management: Automatically installs all required libraries and dependencies.
 System Compatibility: Ensures a consistent environment across different machines.
+
+# Run within the Docker
+## clone yolov5
+
+git clone git@github.com:ultralytics/yolov5.git
+
+cd yolov5
+
+pip install -r requirements.txt 
