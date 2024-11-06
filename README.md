@@ -34,4 +34,13 @@ python detect.py --weights runs/train/exp/weights/best.pt --img 640 --source /pa
 =======
 ## Usage 	
 the code model is exported to ONNX and a python file with sample of having ros topic as input is uploaded take a look and implement for your use case.
->>>>>>> 2dd57102e3f3f6f7850dabc8cddbc92dfd11de28
+
+
+
+## Usage GPU enabled pytorch based	
+The model was trained using pytorch and exported for CPU and GPU enabled, 
+
+I have processed the output to be shown wether annotated or a message showing the center you can simply include the rostopic output with the message it needs for your application.
+
+read yolo_gpu.py it helps you implement for your own application and ros version.
+
