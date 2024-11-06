@@ -1,0 +1,41 @@
+FROM osrf/ros:humble-desktop-jammy
+
+
+ARG USERNAME
+ENV DEBIAN_FRONTEND noninteractive
+USER root
+# ENV CMAKE_PREFIX_PATH="/usr/local:$CMAKE_PREFIX_PATH"
+
+RUN apt-get update && apt-get upgrade -y && rosdep update
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-humble-topic-based-ros2-control \
+    ros-humble-ament-cmake \
+    ros-humble-ros-base \
+    wget \
+    python3-pip \
+    build-essential \
+    cmake \
+    git \
+    python3-colcon-common-extensions \
+    libbullet-dev \
+    libeigen3-dev \
+    libboost-all-dev \
+    bash-completion && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /home/$USERNAME/workspaces
+
+ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+
+
+#RUN mkdir -p /opt/.ro
+#COPY ./docker/fastdds.xml /opt/.ros/fastdds.xml
+#ENV FASTRTPS_DEFAULT_PROFILES_FILE=/opt/.ros/fastdds.xml
+
+#COPY ./docker/ros_entrypoint.sh /opt/.ros/
+# RUN echo "source /opt/.ros/ros_entrypoint.sh" >> ~/.bashrc
+# ENTRYPOINT [ "/opt/.ros/ros_entrypoint.sh" ]
+
+CMD ["bash"]
+
