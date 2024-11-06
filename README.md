@@ -26,5 +26,12 @@ We start with a Dockerfile that sets up an environment with all necessary depend
 python detect.py --weights runs/train/exp/weights/best.pt --img 640 --source /path/to/images
 
 
+<<<<<<< HEAD
+## The model has been transferred to ONNX, can be run using only CPU, a sample on how to run it is uploaded as well, 
+
+## Use the sample to run rosnode for valve detection
+
+=======
 ## Usage 	
 the code model is exported to ONNX and a python file with sample of having ros topic as input is uploaded take a look and implement for your use case.
+>>>>>>> 2dd57102e3f3f6f7850dabc8cddbc92dfd11de28
