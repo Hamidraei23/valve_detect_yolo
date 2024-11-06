@@ -24,3 +24,7 @@ We start with a Dockerfile that sets up an environment with all necessary depend
 
 ## Sample command
 python detect.py --weights runs/train/exp/weights/best.pt --img 640 --source /path/to/images
+
+
+## Usage 	
+the code model is exported to ONNX and a python file with sample of having ros topic as input is uploaded take a look and implement for your use case.
