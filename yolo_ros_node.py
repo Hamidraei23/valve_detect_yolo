@@ -26,7 +26,7 @@ class YoloDetectionNode(Node):
         # Subscribe to the image topic
         self.subscription = self.create_subscription(
             Image,
-            '/camera/camera/color/image_raw',  # Update with your image topic
+            '/camera/color/image_raw',  # Update with your image topic
             self.image_callback,
             10
         )
