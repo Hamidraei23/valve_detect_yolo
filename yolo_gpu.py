@@ -6,7 +6,7 @@ import numpy as np
 
 def main():
     # Load the YOLOv5 model
-    model = torch.hub.load('./yolov5', 'custom', path='./weights/best.pt', source='local')  # Adjust path if necessary
+    model = torch.hub.load('./yolov5', 'custom', path='./weights/for_drone_a/best.pt', source='local')  # Adjust path if necessary
 
     # Set model to evaluation mode
     model.eval()
@@ -15,7 +15,7 @@ def main():
     # Replace 'best.pt' with the path to your trained model weights
 
     # Specify the folder containing images
-    image_folder = '/home/hami/workspaces/ros/noetic/test_ws/frames'
+    image_folder = '/home/hami/workspaces/ros/noetic/test_ws/valve_detect_yolo/frame_test'
 
     # Get list of image files (modify extensions if needed)
     image_paths = glob.glob(os.path.join(image_folder, '*.jpg')) + \

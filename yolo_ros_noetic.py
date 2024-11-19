@@ -11,7 +11,7 @@ def main():
     rospy.init_node('yolo_detector', anonymous=True)
 
     # Load the YOLOv5 model
-    model = torch.hub.load('./yolov5', 'custom', path='./weights/after_ward/special_a/best.pt', source='local')  # Adjust path if necessary
+    model = torch.hub.load('./yolov5', 'custom', path='./weights/for_drone_a/best.pt', source='local')  # Adjust path if necessary
     model.eval()
 
     bridge = CvBridge()
