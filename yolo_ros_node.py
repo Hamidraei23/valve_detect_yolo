@@ -21,12 +21,12 @@ class YoloDetectionNode(Node):
         self.bridge = CvBridge()
 
         # Load YOLO model using ultralytics
-        self.model = YOLO('/home/hami/workspaces/ros_two/yolo_ws/valve_detect_yolo/weights/best.pt')  # Update with your model path
+        self.model = YOLO('/home/hami/workspaces/raicam_ws/valve_detect_yolo/weights/after_ward/special_a/best.pt')  # Update with your model path
 
         # Subscribe to the image topic
         self.subscription = self.create_subscription(
             Image,
-            '/camera/color/image_raw',  # Update with your image topic
+            '/camera/camera/color/image_raw',  # Update with your image topic
             self.image_callback,
             10
         )

@@ -45,13 +45,13 @@ class ImageStreamSubscriber(Node):
                 weight_loc.append(direc)
             else:
                 break
-        weight_loc.append("src/yolov5_ros2_detector/yolov5_ros2/yolov5_ros2/weights/")
+        weight_loc.append("./valve_detect_yolo/weights/after_ward/special_a/")
         weight_loc = "/".join(weight_loc)
         #print(weight_loc)
         
         # parameters
-        self.declare_parameter('weights', 'yolov5s.pt')
-        self.declare_parameter('subscribed_topic', '/image')
+        self.declare_parameter('weights', 'best.pt')
+        self.declare_parameter('subscribed_topic', '/camera/camera/color/image_raw')
         self.declare_parameter('published_topic', '/yolov5_ros2/image')
         self.declare_parameter('img_size', 416)
         self.declare_parameter('device', '')
@@ -134,39 +134,65 @@ class ImageStreamSubscriber(Node):
         bboxes = BoundingBoxes()
         
         # Process detections
-        for i, det in enumerate(self.pred):                                         # detections per image
+        for i, det in enumerate(self.pred):  # detections per image
             s, im0 = '', self.im0s.copy()
-            #frame = getattr(dataset, 'frame', 0)
-            s += '%gx%g ' % self.img.shape[2:]                                      # print string
-            gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]                              # normalization gain whwh
-            
+            s += '%gx%g ' % self.img.shape[2:]  # print string
+
             if len(det):
-                # Rescale boxes from img_size to im0 size
+            # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(self.img.shape[2:], det[:, :4], im0.shape).round()
-                
-                # Print results
-                for c in det[:, -1].unique():
-                    n = (det[:, -1] == c).sum()  # detections per class
-                    s += f"{n} {self.names[int(c)]}{'s' * (n > 1)}, "               # add to string
-                    
-                for *xyxy, conf, cls in reversed(det):
-                    
-                    # Add bbox to image
-                    c = int(cls)  # integer class
-                    label = None if self.hide_labels else (self.names[c] if self.hide_conf else f'{self.names[c]} {conf:.2f}')
-                    plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=self.line_thickness-1)    
-                    
-                    # Single BoundingBox msg
-                    single_bbox = BoundingBox()
-                    single_bbox.xmin = int(xyxy[0].item())
-                    single_bbox.ymin = int(xyxy[1].item())
-                    single_bbox.xmax = int(xyxy[2].item())
-                    single_bbox.ymax = int(xyxy[3].item())
-                    single_bbox.probability = conf.item()
-                    single_bbox.id = c
-                    single_bbox.class_id = self.names[c]
-                    
-                    bboxes.bounding_boxes.append(single_bbox)
+
+                # Find the detection with the highest confidence
+                max_conf_idx = torch.argmax(det[:, 4])
+                highest_det = det[max_conf_idx]
+
+                # Unpack the detection
+                xyxy = highest_det[:4]
+                conf = highest_det[4]
+                cls = highest_det[5]
+
+                # Convert tensor values to CPU and then to numpy for further processing
+                xyxy = xyxy.cpu().numpy()
+                conf = conf.cpu().item()
+                cls = cls.cpu().item()
+
+                # Add bbox to image
+                c = int(cls)  # integer class
+                label = None if self.hide_labels else (
+                    self.names[c] if self.hide_conf else f'{self.names[c]} {conf:.2f}')
+                plot_one_box(
+                    xyxy,
+                    im0,
+                    label=label,
+                    color=colors(c, True),
+                    line_thickness=self.line_thickness - 1
+                )
+
+                # Single BoundingBox msg
+                single_bbox = BoundingBox()
+                single_bbox.xmin = int(xyxy[0])
+                single_bbox.ymin = int(xyxy[1])
+                single_bbox.xmax = int(xyxy[2])
+                single_bbox.ymax = int(xyxy[3])
+                single_bbox.probability = conf
+                single_bbox.id = c
+                single_bbox.class_id = self.names[c]
+
+                # Calculate center coordinates
+                x_center = (single_bbox.xmin + single_bbox.xmax) / 2
+                y_center = (single_bbox.ymin + single_bbox.ymax) / 2
+
+                print(f"center is {x_center} and {y_center}")
+
+                # Optionally, add center coordinates to the BoundingBox message if fields are available
+                # single_bbox.x_center = x_center
+                # single_bbox.y_center = y_center
+
+                bboxes.bounding_boxes.append(single_bbox)
+            else:
+                # Handle the case with no detections if necessary
+                pass
+
         
         # Publishing bounding boxes and image with bounding boxes attached
         # same time-stamp for image and bounding box published, to match input image and output boundingboxes frames
