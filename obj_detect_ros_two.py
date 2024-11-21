@@ -57,8 +57,10 @@ class ImageStreamSubscriber(Node):
         # parameters
         self.declare_parameter('weights', 'best.pt')
         self.declare_parameter('subscribed_topic', '/camera/camera/color/image_raw')
-        self.declare_parameter('camera_info', '/camera/camera/color/camera_info')
+        
         self.declare_parameter('published_topic', '/yolov5_ros2/image')
+
+        self.declare_parameter('camera_info', '/camera/camera/color/camera_info')
         self.declare_parameter('direction_vector_topic', '/direction_vector')
         self.declare_parameter('img_size', 416)
         self.declare_parameter('device', '')
@@ -163,7 +165,7 @@ class ImageStreamSubscriber(Node):
         start_point.z = 0.0
 
         # Define the end point based on the direction vector (scaled for visualization)
-        scale = 1.0  # Adjust the scale as needed
+        scale = 0.4  # Adjust the scale as needed
         end_point = Point()
         end_point.x = direction_vector[0] * scale
         end_point.y = direction_vector[1] * scale
