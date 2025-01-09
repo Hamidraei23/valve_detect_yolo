@@ -35,10 +35,11 @@ python detect.py --weights runs/train/exp/weights/best.pt --img 640 --source /pa
 ## Usage 	
 the code model is exported to ONNX and a python file with sample of having ros topic as input is uploaded take a look and implement for your use case.
 
+[![Demo Video](https://img.youtube.com/vi/CxQ9xXzTJyQ/0.jpg)](https://www.youtube.com/watch?v=CxQ9xXzTJyQ)
 
 [Watch the Demo Video](demo.gif)
 
-
+https://youtu.be/CxQ9xXzTJyQ
 
 ## Usage GPU enabled pytorch based	
 The model was trained using pytorch and exported for CPU and GPU enabled, 
