@@ -36,7 +36,7 @@ python detect.py --weights runs/train/exp/weights/best.pt --img 640 --source /pa
 the code model is exported to ONNX and a python file with sample of having ros topic as input is uploaded take a look and implement for your use case.
 
 
-[Watch the Demo Video](demo.mp4)
+[Watch the Demo Video](demo.gif)
 
 
 
